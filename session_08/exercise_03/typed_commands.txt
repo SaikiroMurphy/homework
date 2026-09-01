@@ -1,0 +1,7 @@
+docker login ghcr.io -u SaikiroMurphy
+
+docker build -t payment-service:1.0.0 .
+
+docker tag payment-service:1.0.0 ghcr.io/saikiromurphy/payment-service:1.0.0
+
+docker push ghcr.io/saikiromurphy/payment-service:1.0.0
