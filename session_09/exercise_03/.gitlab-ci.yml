@@ -1,0 +1,29 @@
+image: gradle:7.6-jdk17
+
+stages:
+  - test
+  - build
+
+variables:
+  POSTGRES_DB: human_resource_db
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
+
+test_job:
+  stage: test
+  services:
+    - name: postgres:14-alpine
+      alias: postgres
+  script:
+    - chmod +x gradlew
+    - ./gradlew test
+
+build_job:
+  stage: build
+  script:
+    - chmod +x gradlew
+    - ./gradlew build -x test
+  artifacts:
+    paths:
+      - build/libs/*.jar
+    expire_in: 1 day
