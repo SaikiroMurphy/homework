@@ -1,0 +1,40 @@
+# Tạo SSH Key trên máy cá nhân
+ssh-keygen -t ed25519 -C "deploy-vps"
+
+# SSH vào VPS
+ssh -i "C:\Users\ASUS\.ssh\quickbite-key.pem" ubuntu@15.135.234.164
+
+# Chuyển root
+sudo -i
+
+# Tạo SSH directory cho deploy
+mkdir -p /home/deploy/.ssh
+touch /home/deploy/.ssh/authorized_keys
+
+# Phân quyền
+chmod 700 /home/deploy/.ssh
+chmod 600 /home/deploy/.ssh/authorized_keys
+chown -R deploy:deploy /home/deploy/.ssh
+
+# Kiểm tra
+cat /home/deploy/.ssh/authorized_keys
+ls -ld /home/deploy/.ssh
+ls -l /home/deploy/.ssh/authorized_keys
+
+# Backup SSH config
+cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
+
+# Sửa SSH config
+nano /etc/ssh/sshd_config
+
+# Kiểm tra config
+sshd -t
+
+# Restart SSH
+systemctl restart ssh
+
+# Kiểm tra SSH
+systemctl status ssh
+
+# Kiểm tra cấu hình
+sshd -T | grep -E 'permitrootlogin|passwordauthentication'
