@@ -1,0 +1,112 @@
+KẾT QUẢ MONG MUỐN – CẤU HÌNH HTTPS VỚI LET'S ENCRYPT
+
+1. Cài đặt Certbot thành công
+
+Lệnh:
+sudo apt update
+sudo apt install certbot python3-certbot-nginx -y
+
+Kiểm tra:
+certbot --version
+
+Kết quả mong muốn:
+Certbot được cài đặt thành công và hiển thị phiên bản, ví dụ:
+certbot 5.x.x
+
+
+2. DNS hoạt động
+
+Tên miền:
+api.my-ecommerce.com
+
+Kết quả mong muốn:
+api.my-ecommerce.com trỏ đúng về Public IP của EC2.
+
+
+3. Cấp SSL Certificate
+
+Lệnh:
+sudo certbot --nginx -d api.my-ecommerce.com
+
+Kết quả mong muốn:
+- Certbot xác thực tên miền thành công.
+- Let's Encrypt cấp chứng chỉ SSL.
+- Nginx được Certbot tự động cấu hình HTTPS.
+- Truy cập được:
+https://api.my-ecommerce.com
+
+
+4. Cấu hình Nginx HTTPS
+
+HTTP:
+api.my-ecommerce.com
+        ↓
+301 Redirect
+        ↓
+https://api.my-ecommerce.com
+
+HTTPS:
+https://api.my-ecommerce.com
+        ↓
+Nginx :443
+        ↓
+Backend :8080
+
+
+5. Kiểm tra Nginx
+
+Lệnh:
+sudo nginx -t
+
+Kết quả mong muốn:
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+
+Sau đó:
+sudo systemctl reload nginx
+
+
+6. Kiểm tra HTTPS
+
+Mở trình duyệt:
+https://api.my-ecommerce.com
+
+Kết quả mong muốn:
+- Website/API truy cập được bằng HTTPS.
+- Trình duyệt hiển thị kết nối bảo mật (ổ khóa).
+- Không còn cảnh báo HTTP.
+
+
+7. Kiểm tra Certificate
+
+Lệnh:
+sudo certbot certificates
+
+Kết quả mong muốn:
+Hiển thị certificate cho:
+api.my-ecommerce.com
+
+Certificate được lưu tại:
+ /etc/letsencrypt/live/api.my-ecommerce.com/fullchain.pem
+
+Private key:
+ /etc/letsencrypt/live/api.my-ecommerce.com/privkey.pem
+
+
+8. Tự động gia hạn SSL
+
+Kiểm tra timer:
+systemctl list-timers | grep certbot
+
+Kiểm tra gia hạn thử:
+sudo certbot renew --dry-run
+
+Kết quả mong muốn:
+Thông báo thử gia hạn thành công, không có lỗi.
+
+Mục tiêu cuối cùng:
+- Domain hoạt động bằng HTTPS.
+- HTTP tự động chuyển sang HTTPS.
+- Nginx reverse proxy đến backend.
+- SSL Certificate được Let's Encrypt cấp.
+- Certificate được tự động gia hạn trước khi hết hạn.

@@ -1,0 +1,20 @@
+server {
+    listen 80;
+    listen [::]:80;
+
+    server_name _;
+
+    location / {
+        proxy_pass http://localhost:3000;
+
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+# Ý nghĩa của chỉ thị `proxy_pass`: proxy_pass yêu cầu Nginx chuyển tiếp (proxy) request nhận được sang server phía sau mà người dùng không cần biết hoặc nhập :3000.
+
+# Bẫy: Nếu React ở port 3000 bị sập, Nginx vẫn chạy nhưng không kết nối được tới upstream localhost:3000 và trả về lỗi HTTP 502 Bad Gateway.
