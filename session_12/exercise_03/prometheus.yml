@@ -1,0 +1,9 @@
+scrape_configs:
+  - job_name: 'node'
+    static_configs:
+      - targets: ['node-exporter:9100']
+
+# Mặc định Node Exporter chạy ở Port 9100.
+# Không nên public trực tiếp 9100 ra Internet nếu không cần thiết. 
+# Endpoint /metrics có thể cung cấp khá nhiều thông tin về máy chủ và 
+# Node Exporter không phải là một dịch vụ có cơ chế xác thực người dùng mặc định.

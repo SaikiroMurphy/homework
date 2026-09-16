@@ -1,0 +1,7 @@
+dependencies {
+    // Actuator: cung cấp các endpoint giám sát
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // Prometheus: chuyển metrics sang định dạng Prometheus
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+}

@@ -1,0 +1,13 @@
+scrape_configs:
+  - job_name: 'backend'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['host.docker.internal:8080']
+
+# Nếu Prometheus được chạy bằng Docker (Container) còn Backend chạy trực tiếp trên máy chủ thật (Host), 
+# thì chữ `localhost` trong file cấu hình sẽ trỏ đến chính container Prometheus, 
+# không phải máy chủ thật.
+# Vì vậy, để Prometheus có thể truy cập vào Backend đang chạy trên máy chủ thật,
+# bạn cần sử dụng `host.docker.internal` thay vì `localhost`.
+
+# Có, cần metrics_path: '/actuator/prometheus' nếu Spring Boot đang expose metrics theo endpoint mặc định của Actuator.
