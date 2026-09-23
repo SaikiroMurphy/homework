@@ -1,0 +1,33 @@
+
+<configuration>
+
+    <!-- Ghi log ra file và tự động chia nhỏ theo thời gian, dung lượng -->
+    <appender name="FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <!-- File log hiện tại -->
+        <file>logs/app.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+
+            <!-- Tên các file log cũ -->
+            <fileNamePattern>logs/app-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+
+            <!-- Dung lượng tối đa mỗi file -->
+            <maxFileSize>10MB</maxFileSize>
+
+            <!-- Giữ log trong tối đa 30 ngày -->
+            <maxHistory>30</maxHistory>
+
+        </rollingPolicy>
+
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+
+    </appender>
+
+    <!-- Chỉ ghi log từ INFO trở lên -->
+    <root level="INFO">
+        <appender-ref ref="FILE"/>
+    </root>
+
+</configuration>
